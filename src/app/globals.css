@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette — Coral, Ocean Blue & White */
+  --color-navy: #102a43;
+  --color-navy-950: #0a1d30;
+  --color-navy-800: #163a5c;
+  --color-royal: #1d5a8a;
+  --color-ocean: #247ba0;
+  --color-coral: #ff786b;
+  --color-coral-600: #f0604f;
+  --color-coral-soft: #ffe5e0;
+  --color-ice: #eaf4f8;
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-delayed: float 7s ease-in-out 1.5s infinite;
+  --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.9); opacity: 0.7; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  /* Phones: scale the whole rem-based system down slightly for a tighter, balanced layout */
+  @media (max-width: 639px) {
+    html { font-size: 93.75%; }
+  }
+  body {
+    background: var(--color-white);
+    color: var(--color-navy);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-coral);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: var(--color-coral);
+    color: white;
+  }
+}
+
+@layer components {
+  /* Subtle dot grid used on dark sections */
+  .bg-grid {
+    background-image: radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .bg-grid-light {
+    background-image: radial-gradient(rgb(16 42 67 / 0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  /* Scroll reveal — toggled by <Reveal /> */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  .no-js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
